@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface BookStoreInventoryRepository extends CrudRepository<BookStoreInventory, Long> {
     List<BookStoreInventory> findByBookStoreName(String bookStoreName);
+
     BookStoreInventory findByBookIdAndBookStoreId(Long bookId, Long bookStoreId);
 }

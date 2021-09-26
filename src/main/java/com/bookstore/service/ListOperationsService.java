@@ -2,14 +2,13 @@ package com.bookstore.service;
 
 
 import com.bookstore.model.Book;
-import com.bookstore.model.BookStoreInventory;
-import com.bookstore.repository.CategoryRepository;
 import com.bookstore.model.BookStore;
+import com.bookstore.model.BookStoreInventory;
 import com.bookstore.model.Category;
 import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.BookStoreInventoryRepository;
 import com.bookstore.repository.BookStoreRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bookstore.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,35 +16,35 @@ import java.util.List;
 @Service
 public class ListOperationsService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
+    private final BookStoreRepository bookStoreRepository;
+    private final BookStoreInventoryRepository bookStoreInventoryRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    public ListOperationsService(CategoryRepository categoryRepository, BookRepository bookRepository, BookStoreRepository bookStoreRepository, BookStoreInventoryRepository bookStoreInventoryRepository) {
+        this.categoryRepository = categoryRepository;
+        this.bookRepository = bookRepository;
+        this.bookStoreRepository = bookStoreRepository;
+        this.bookStoreInventoryRepository = bookStoreInventoryRepository;
+    }
 
-    @Autowired
-    private BookStoreRepository bookStoreRepository;
-
-    @Autowired
-    private BookStoreInventoryRepository bookStoreInventoryRepository;
-
-    public List<Category> listAllCategories(){
+    public List<Category> listAllCategories() {
         return (List<Category>) categoryRepository.findAll();
     }
 
-    public List<Book> listAllBooks(){
+    public List<Book> listAllBooks() {
         return (List<Book>) bookRepository.findAll();
     }
 
-    public List<BookStore> listAllBookStores(){
+    public List<BookStore> listAllBookStores() {
         return (List<BookStore>) bookStoreRepository.findAll();
     }
 
-    public List<Book> listAllBooksByCategoryName(String categoryName){
+    public List<Book> listAllBooksByCategoryName(String categoryName) {
         return bookRepository.findAllByBookCategory(categoryName);
     }
 
-    public List<BookStoreInventory> listAllBooksByBookStoreName(String bookStoreName){
+    public List<BookStoreInventory> listAllBooksByBookStoreName(String bookStoreName) {
         return bookStoreInventoryRepository.findByBookStoreName(bookStoreName);
     }
 }

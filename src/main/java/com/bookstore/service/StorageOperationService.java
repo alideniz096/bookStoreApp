@@ -1,17 +1,13 @@
 package com.bookstore.service;
 
+import com.bookstore.controller.vo.BookStoreInventoryRequest;
 import com.bookstore.model.Book;
+import com.bookstore.model.BookStore;
 import com.bookstore.model.BookStoreInventory;
 import com.bookstore.repository.BookRepository;
-import com.bookstore.controller.vo.BookStoreInventoryRequest;
-
-import com.bookstore.model.BookStore;
-
 import com.bookstore.repository.BookStoreInventoryRepository;
-
 import com.bookstore.repository.BookStoreRepository;
 import com.bookstore.util.enums.PriceEnum;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -21,14 +17,15 @@ public class StorageOperationService {
 
     private static final Long ADD_NEW_ONE_BOOK = 1L;
 
-    @Autowired
-    private BookStoreInventoryRepository bookStoreInventoryRepository;
+    private final BookStoreInventoryRepository bookStoreInventoryRepository;
+    private final BookRepository bookRepository;
+    private final BookStoreRepository bookStoreRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
-
-    @Autowired
-    private BookStoreRepository bookStoreRepository;
+    public StorageOperationService(BookStoreInventoryRepository bookStoreInventoryRepository, BookRepository bookRepository, BookStoreRepository bookStoreRepository) {
+        this.bookStoreInventoryRepository = bookStoreInventoryRepository;
+        this.bookRepository = bookRepository;
+        this.bookStoreRepository = bookStoreRepository;
+    }
 
     public BookStoreInventory addBookToTheBookStoreInventory(BookStoreInventoryRequest request) {
         BookStore bookStore = findBookStoreById(request.getBookStoreId());
@@ -68,17 +65,17 @@ public class StorageOperationService {
         return bookStoreInventoryRepository.findByBookIdAndBookStoreId(bookId, bookStoreId) != null;
     }
 
-    private BookStore findBookStoreById(Long bookStoreId){
+    private BookStore findBookStoreById(Long bookStoreId) {
 
         return bookStoreRepository.findByBookStoreId(bookStoreId);
     }
 
-    private Book findBookById(Long bookId){
+    private Book findBookById(Long bookId) {
 
         return bookRepository.findByBookId(bookId);
     }
 
-    private BigDecimal getCityPriceMultiplier(BookStore bookStore){
+    private BigDecimal getCityPriceMultiplier(BookStore bookStore) {
         PriceEnum priceMultiplier = PriceEnum.valueOf(bookStore.getBookStoreCity());
         return new BigDecimal(priceMultiplier.getValue());
     }

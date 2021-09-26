@@ -4,16 +4,18 @@ import com.bookstore.model.Book;
 import com.bookstore.model.Category;
 import com.bookstore.repository.BookRepository;
 import com.bookstore.repository.CategoryRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BookCategoryOrganizerService {
-    @Autowired
-    private CategoryRepository categoryRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
+
+    public BookCategoryOrganizerService(CategoryRepository categoryRepository, BookRepository bookRepository) {
+        this.categoryRepository = categoryRepository;
+        this.bookRepository = bookRepository;
+    }
 
     public Book changeBookCategory(Long bookId, Long categoryId) {
         Book book = bookRepository.findByBookId(bookId);

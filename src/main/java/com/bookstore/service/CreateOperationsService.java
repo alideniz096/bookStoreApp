@@ -2,36 +2,35 @@ package com.bookstore.service;
 
 
 import com.bookstore.model.Book;
+import com.bookstore.model.BookStore;
 import com.bookstore.model.Category;
 import com.bookstore.repository.BookRepository;
-import com.bookstore.repository.CategoryRepository;
-import com.bookstore.model.BookStore;
 import com.bookstore.repository.BookStoreRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.bookstore.repository.CategoryRepository;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CreateOperationsService {
 
-    @Autowired
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
+    private final BookRepository bookRepository;
+    private final BookStoreRepository bookStoreRepository;
 
-    @Autowired
-    private BookRepository bookRepository;
+    public CreateOperationsService(CategoryRepository categoryRepository, BookRepository bookRepository, BookStoreRepository bookStoreRepository) {
+        this.categoryRepository = categoryRepository;
+        this.bookRepository = bookRepository;
+        this.bookStoreRepository = bookStoreRepository;
+    }
 
-    @Autowired
-    private BookStoreRepository bookStoreRepository;
-
-    public Category createCategory(Category category){
+    public Category createCategory(Category category) {
         return categoryRepository.save(category);
     }
 
-    public Book createBook(Book book){
+    public Book createBook(Book book) {
         return bookRepository.save(book);
     }
 
-    public BookStore createBookStore(BookStore bookStore){
+    public BookStore createBookStore(BookStore bookStore) {
         return bookStoreRepository.save(bookStore);
     }
 }

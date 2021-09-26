@@ -42,7 +42,7 @@ public class StorageOperationServiceTest {
     public void init() {
         bookStore = new BookStore();
         bookStore.setBookStoreId(1L);
-        bookStore.setBookStoreCity("İstanbul");
+        bookStore.setBookStoreCity("ISTANBUL");
         bookStore.setBookStoreName("Deniz Book Store");
 
         book = new Book();
@@ -96,5 +96,25 @@ public class StorageOperationServiceTest {
         Mockito.when(storageOperationService.addBookToTheBookStoreInventory(request)).thenReturn(newBookStoreInventory);
 
         Assert.assertEquals(newBookStoreInventory.getBookName(), newBookStoreInventory.getBookName());
+    }
+
+    @Test
+    public void removeBookFromTheBookStoreInventoryIfBookNotExist() {
+        Mockito.when(bookStoreInventoryRepository.findByBookIdAndBookStoreId(book.getBookId(), bookStore.getBookStoreId())).thenReturn(null);
+        Mockito.doNothing().when(bookStoreInventoryRepository).delete(existingbookStoreInventory.getBookStoreInventoryId());
+
+        boolean actualResult = storageOperationService.removeBookFromTheBookStoreInventory(request);
+
+        Assert.assertFalse(actualResult);
+    }
+
+    @Test
+    public void removeBookFromTheBookStoreInventoryIfBookExist() {
+        Mockito.when(bookStoreInventoryRepository.findByBookIdAndBookStoreId(book.getBookId(), bookStore.getBookStoreId())).thenReturn(existingbookStoreInventory);
+        Mockito.doNothing().when(bookStoreInventoryRepository).delete(existingbookStoreInventory.getBookStoreInventoryId());
+
+        boolean actualResult = storageOperationService.removeBookFromTheBookStoreInventory(request);
+
+        Assert.assertTrue(actualResult);
     }
 }
